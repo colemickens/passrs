@@ -50,6 +50,8 @@ pub mod cli;
 pub mod clipboard;
 pub mod consts;
 pub mod error;
+#[cfg(feature = "libsecret")]
+pub mod libsecretdbus;
 #[cfg(feature = "otp")]
 pub mod otp;
 #[doc(hidden)]

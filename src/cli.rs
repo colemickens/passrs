@@ -10,7 +10,9 @@ use anyhow::Result;
 use structopt::clap::AppSettings;
 use structopt::StructOpt;
 
-use crate::subcmds::{cp, edit, find, generate, git, grep, init, insert, ls, mv, rm, show, unclip};
+use crate::subcmds::{
+    cp, edit, find, generate, git, grep, init, insert, libsecret, ls, mv, rm, show, unclip,
+};
 use crate::util;
 
 // TODO: check out argh: https://github.com/google/argh
@@ -44,6 +46,8 @@ pub(crate) enum PassSubcmd {
         /// The subfolder to list.
         subfolder: Option<String>,
     },
+    /// Run libsecret dbus provider (blocking).
+    Libsecret {},
     /// List secrets that match secret-name.
     Find {
         #[structopt(required = true)]
@@ -291,6 +295,10 @@ pub fn opt() -> Result<()> {
             PassSubcmd::Ls { subfolder } => {
                 util::verify_store_exists()?;
                 ls::ls(subfolder)?;
+            }
+            PassSubcmd::Libsecret {} => {
+                util::verify_store_exists()?;
+                libsecret::libsecret()?;
             }
             PassSubcmd::Find { secret_name } => {
                 util::verify_store_exists()?;
